@@ -21,12 +21,11 @@ public class SleepTrackerApp {
         functionList.add(new MaxSessionDuration());
         functionList.add(new AvgSessionDuration());
         functionList.add(new SleeplessNightsCount());
+        functionList.add(new ChronoTypeFunc());
 
         try {
             List<SleepingSession> sleepSessions = new DataLoader().loadSleepData(SLEEP_LOG);
-            for (SleepingSession session : sleepSessions) {
-                System.out.println(String.format("start: %s, end: %s, бессонная: %s, хронотип: %s", session.getSleepStart(), session.getSleepEnd(), session.isSleeplessNight(), session.getChronoType()));
-            }
+            sleepSessions.forEach(session -> System.out.println(String.format("start: %s, end: %s, был сон: %s, хронотип: %s", session.getSleepStart(), session.getSleepEnd(), session.isSleepingNight(), session.getChronoType())));
             functionList.stream()
                     .map(function -> function.apply(sleepSessions))
                     .forEach(System.out::println);

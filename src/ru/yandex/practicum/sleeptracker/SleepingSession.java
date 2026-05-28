@@ -33,7 +33,7 @@ public class SleepingSession {
         return sleepEnd;
     }
 
-    public boolean isSleeplessNight() {
+    public boolean isSleepingNight() {
         LocalDate startDate = sleepStart.toLocalDate();
         LocalDate endDate = sleepEnd.toLocalDate();
         LocalTime startTime = sleepStart.toLocalTime();
@@ -41,14 +41,14 @@ public class SleepingSession {
 
         if (!startDate.equals(endDate)) {
             //Если пользователь лёг спать в один день, а проснулся на следующий, он точно спал этой ночью.
-            return false;
+            return true;
         }
         LocalTime nightEnd = LocalTime.of(6, 0);
         if (startTime.isBefore(nightEnd)) {
-            return false;
+            return true;
         }
 
-        return endTime.isAfter(nightEnd);
+        return endTime.isBefore(nightEnd);
     }
 
     public Optional<ChronoType> getChronoType() {
@@ -65,7 +65,7 @@ public class SleepingSession {
             return Optional.of(ChronoType.LARK);
         }
 
-        if (isSleeplessNight()) {
+        if (!isSleepingNight()) {
             return Optional.empty();
         }
 
