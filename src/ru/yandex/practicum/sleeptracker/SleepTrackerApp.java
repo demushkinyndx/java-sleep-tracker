@@ -1,10 +1,7 @@
 package ru.yandex.practicum.sleeptracker;
 
 import ru.yandex.practicum.sleeptracker.exception.SessionParseErrorException;
-import ru.yandex.practicum.sleeptracker.function.AvgSessionDuration;
-import ru.yandex.practicum.sleeptracker.function.BadQualitySessionsCount;
-import ru.yandex.practicum.sleeptracker.function.MaxSessionDuration;
-import ru.yandex.practicum.sleeptracker.function.MinSessionDuration;
+import ru.yandex.practicum.sleeptracker.function.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,17 +12,21 @@ import java.util.function.Function;
 public class SleepTrackerApp {
 
     static final String SLEEP_LOG = "src/resources/sleep_log.txt";
-    private static List<Function<List<SleepingSession>, SleepAnalysisResult>> functionList;
 
     public static void main(String[] args) {
-        functionList = new ArrayList<>();
+        List<Function<List<SleepingSession>, SleepAnalysisResult>> functionList = new ArrayList<>();
+        functionList.add(new TotalSessionsCount());
         functionList.add(new BadQualitySessionsCount());
         functionList.add(new MinSessionDuration());
         functionList.add(new MaxSessionDuration());
         functionList.add(new AvgSessionDuration());
+        functionList.add(new SleeplessNightsCount());
 
         try {
             List<SleepingSession> sleepSessions = new DataLoader().loadSleepData(SLEEP_LOG);
+            for (SleepingSession session : sleepSessions) {
+                System.out.println(String.format("start: %s, end: %s, бессонная: %s, хронотип: %s", session.getSleepStart(), session.getSleepEnd(), session.isSleeplessNight(), session.getChronoType()));
+            }
             functionList.stream()
                     .map(function -> function.apply(sleepSessions))
                     .forEach(System.out::println);
