@@ -28,6 +28,6 @@ public class SleeplessNightsCount implements Function<List<SleepingSession>, Sle
 
         long nightsTotal = ChronoUnit.DAYS.between(firstDateTime.toLocalDate(), lastDateTime.toLocalDate());
 
-        return new SleepAnalysisResult("Количество бессонных ночей", nightsTotal-sleepingNightsCount);
+        return new SleepAnalysisResult("Количество бессонных ночей", nightsTotal - sleepingNightsCount);
     }
 }
