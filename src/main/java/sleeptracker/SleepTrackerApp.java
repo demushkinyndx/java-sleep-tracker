@@ -2,7 +2,6 @@ package main.java.sleeptracker;
 
 import main.java.sleeptracker.exception.SessionParseErrorException;
 import main.java.sleeptracker.function.*;
-import ru.yandex.practicum.sleeptracker.function.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
