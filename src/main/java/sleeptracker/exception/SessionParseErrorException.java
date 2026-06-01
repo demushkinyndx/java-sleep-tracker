@@ -1,4 +1,4 @@
-package ru.yandex.practicum.sleeptracker.exception;
+package main.java.sleeptracker.exception;
 
 public class SessionParseErrorException extends RuntimeException {
     public SessionParseErrorException(final String message) {

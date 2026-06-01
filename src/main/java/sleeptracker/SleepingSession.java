@@ -1,4 +1,4 @@
-package ru.yandex.practicum.sleeptracker;
+package main.java.sleeptracker;
 
 import java.time.Duration;
 import java.time.LocalDate;

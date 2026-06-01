@@ -1,6 +1,7 @@
-package ru.yandex.practicum.sleeptracker;
+package main.java.sleeptracker;
 
-import ru.yandex.practicum.sleeptracker.exception.SessionParseErrorException;
+import main.java.sleeptracker.exception.SessionParseErrorException;
+import main.java.sleeptracker.function.*;
 import ru.yandex.practicum.sleeptracker.function.*;
 
 import java.io.IOException;

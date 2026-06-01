@@ -1,4 +1,4 @@
-package ru.yandex.practicum.sleeptracker;
+package main.java.sleeptracker;
 
 public class SleepAnalysisResult {
     private final String title;

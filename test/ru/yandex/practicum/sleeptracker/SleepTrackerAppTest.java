@@ -1,5 +1,10 @@
 package ru.yandex.practicum.sleeptracker;
 
+import main.java.sleeptracker.ChronoType;
+import main.java.sleeptracker.SleepAnalysisResult;
+import main.java.sleeptracker.SleepingQuality;
+import main.java.sleeptracker.SleepingSession;
+import main.java.sleeptracker.function.*;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -9,8 +14,6 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-import ru.yandex.practicum.sleeptracker.function.*;
 
 public class SleepTrackerAppTest {
 

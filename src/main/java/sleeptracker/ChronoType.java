@@ -1,4 +1,4 @@
-package ru.yandex.practicum.sleeptracker;
+package main.java.sleeptracker;
 
 public enum ChronoType {
     LARK("Жаворонок"),     //  «Жаворонок» — если время засыпания было до 22:00, а время пробуждения до — 7:00.

@@ -1,4 +1,4 @@
-package ru.yandex.practicum.sleeptracker;
+package main.java.sleeptracker;
 
 public enum SleepingQuality {
     GOOD,
