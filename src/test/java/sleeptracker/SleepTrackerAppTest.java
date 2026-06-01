@@ -1,4 +1,4 @@
-package ru.yandex.practicum.sleeptracker;
+package test.java.sleeptracker;
 
 import main.java.sleeptracker.ChronoType;
 import main.java.sleeptracker.SleepAnalysisResult;
