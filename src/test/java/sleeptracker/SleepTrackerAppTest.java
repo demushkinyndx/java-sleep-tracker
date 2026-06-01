@@ -107,6 +107,7 @@ public class SleepTrackerAppTest {
         assertEquals("Хронотип", result.getTitle());
         assertEquals(ChronoType.DOVE, result.getResult());
     }
+
     @Test
     void testSessionChronoType() {
         HashMap<SleepingSession, ChronoType> sessions = new HashMap<>();
