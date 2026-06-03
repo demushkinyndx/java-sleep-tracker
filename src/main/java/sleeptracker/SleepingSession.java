@@ -55,13 +55,23 @@ public class SleepingSession {
         LocalTime startTime = sleepStart.toLocalTime();
         LocalTime endTime = sleepEnd.toLocalTime();
 
+        boolean isAfterMidnight = (startTime.equals(LocalTime.MIDNIGHT) || startTime.isAfter(LocalTime.MIDNIGHT));
         //сова - после 23:00 -> после 9:00
-        if (startTime.isAfter(LocalTime.of(23, 0)) && endTime.isAfter(LocalTime.of(9, 0))) {
+        if (
+                (
+                        startTime.isAfter(LocalTime.of(23, 0)) || isAfterMidnight
+                )
+                        && endTime.isAfter(LocalTime.of(9, 0))
+        ) {
             return Optional.of(ChronoType.OWL);
         }
 
         //жаворонок - до 22:00 -> до 07:00
-        if (startTime.isBefore(LocalTime.of(22, 0)) && endTime.isBefore(LocalTime.of(7, 0))) {
+        if (
+                startTime.isBefore(LocalTime.of(22, 0)) &&
+                        (endTime.isBefore(LocalTime.of(7, 0)))
+
+        ) {
             return Optional.of(ChronoType.LARK);
         }
 

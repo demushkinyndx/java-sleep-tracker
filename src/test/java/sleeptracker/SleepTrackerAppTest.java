@@ -8,10 +8,7 @@ import main.java.sleeptracker.function.*;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -90,7 +87,7 @@ public class SleepTrackerAppTest {
     }
 
     @Test
-    void testChronoTypeFunction() {
+    void testChronoTypeDoveFunction() {
         SleepingSession session1 = new SleepingSession(LocalDateTime.of(2023, 10, 1, 22, 0),
                 LocalDateTime.of(2023, 10, 2, 6, 0), SleepingQuality.GOOD);
         SleepingSession session2 = new SleepingSession(LocalDateTime.of(2023, 10, 2, 23, 0),
@@ -98,7 +95,7 @@ public class SleepTrackerAppTest {
         SleepingSession session3 = new SleepingSession(LocalDateTime.of(2023, 10, 3, 22, 30),
                 LocalDateTime.of(2023, 10, 4, 6, 30), SleepingQuality.GOOD);
 
-        List<SleepingSession> sessions = Arrays.asList(session1, session2, session3);
+        List<SleepingSession> sessions = new ArrayList<>(List.of(session1, session2, session3));
 
         ChronoTypeFunc func = new ChronoTypeFunc();
 
@@ -106,6 +103,56 @@ public class SleepTrackerAppTest {
 
         assertEquals("Хронотип", result.getTitle());
         assertEquals(ChronoType.DOVE, result.getResult());
+
+    }
+
+
+    @Test
+    void testChronoTypeLarkFunction() {
+        List<SleepingSession> sessions = new ArrayList<>(List.of(
+                new SleepingSession(LocalDateTime.of(2023, 10, 1, 22, 0),
+                        LocalDateTime.of(2023, 10, 2, 6, 0), SleepingQuality.GOOD),
+                new SleepingSession(LocalDateTime.of(2023, 10, 2, 23, 0),
+                        LocalDateTime.of(2023, 10, 3, 7, 0), SleepingQuality.GOOD),
+
+                new SleepingSession(LocalDateTime.of(2023, 10, 3, 22, 30),
+                        LocalDateTime.of(2023, 10, 4, 6, 30), SleepingQuality.GOOD),
+                new SleepingSession(LocalDateTime.of(2023, 10, 4, 21, 0),
+                        LocalDateTime.of(2023, 10, 5, 6, 0), SleepingQuality.GOOD),
+
+                new SleepingSession(LocalDateTime.of(2023, 10, 6, 21, 0),
+                        LocalDateTime.of(2023, 10, 7, 6, 59), SleepingQuality.GOOD),
+
+                new SleepingSession(LocalDateTime.of(2023, 10, 7, 21, 0),
+                        LocalDateTime.of(2023, 10, 8, 5, 30), SleepingQuality.GOOD),
+
+                new SleepingSession(LocalDateTime.of(2023, 10, 8, 21, 30),
+                        LocalDateTime.of(2023, 10, 9, 3, 30), SleepingQuality.GOOD)
+        ));
+        ChronoTypeFunc func = new ChronoTypeFunc();
+
+        SleepAnalysisResult result = func.apply(sessions);
+        assertEquals(ChronoType.LARK, result.getResult());
+    }
+
+    @Test
+    void testChronoTypeOwlFunction() {
+        List<SleepingSession> sessions = new ArrayList<>(List.of(
+                new SleepingSession(LocalDateTime.of(2023, 10, 1, 22, 0),
+                        LocalDateTime.of(2023, 10, 2, 6, 0), SleepingQuality.GOOD),
+
+                new SleepingSession(LocalDateTime.of(2023, 10, 3, 21, 0),
+                        LocalDateTime.of(2023, 10, 4, 5, 30), SleepingQuality.GOOD),
+
+                new SleepingSession(LocalDateTime.of(2023, 10, 4, 23, 1),
+                        LocalDateTime.of(2023, 10, 5, 9, 30), SleepingQuality.GOOD),
+
+                new SleepingSession(LocalDateTime.of(2023, 10, 5, 1, 59),
+                        LocalDateTime.of(2023, 10, 5, 10, 30), SleepingQuality.GOOD)
+        ));
+        ChronoTypeFunc func = new ChronoTypeFunc();
+        SleepAnalysisResult result = func.apply(sessions);
+        assertEquals(ChronoType.OWL, result.getResult());
     }
 
     @Test
@@ -155,6 +202,37 @@ public class SleepTrackerAppTest {
 
     @Test
     void testSleeplessNightsCount() {
+        List<SleepingSession> sessions = new ArrayList<>(List.of(
+                new SleepingSession(LocalDateTime.of(2023, 10, 1, 22, 0),
+                        LocalDateTime.of(2023, 10, 1, 22, 30), SleepingQuality.GOOD)
+        ));
+        SleeplessNightsCount sleeplessCount = new SleeplessNightsCount();
+        SleepAnalysisResult result = sleeplessCount.apply(sessions);
+        assertEquals(1L, result.getResult(), "Ошибка подсчета одной бессонной ночи");
+
+        sessions.add(new SleepingSession(LocalDateTime.of(2023, 10, 2, 22, 0),
+                LocalDateTime.of(2023, 10, 3, 6, 0), SleepingQuality.GOOD));
+
+        result = sleeplessCount.apply(sessions);
+        assertEquals(1L, result.getResult(), "Ошибка подсчета одной бессонной ночи в двух записях");
+
+        sessions.add(new SleepingSession(LocalDateTime.of(2023, 10, 3, 23, 0),
+                LocalDateTime.of(2023, 10, 4, 6, 0), SleepingQuality.GOOD));
+        sessions.add(new SleepingSession(LocalDateTime.of(2023, 10, 4, 23, 0),
+                LocalDateTime.of(2023, 10, 5, 7, 0), SleepingQuality.GOOD));
+        sessions.add(new SleepingSession(LocalDateTime.of(2023, 10, 6, 23, 0),
+                LocalDateTime.of(2023, 10, 7, 7, 0), SleepingQuality.GOOD));
+
+        result = sleeplessCount.apply(sessions);
+
+        long expectedNights = 2;
+
+        assertEquals("Количество бессонных ночей", result.getTitle());
+        assertEquals(expectedNights, result.getResult(), "Ошибка подсчета бессонных ночей");
+    }
+
+    @Test
+    void testTotalSessionsCount() {
         List<SleepingSession> sessions = Arrays.asList(
                 new SleepingSession(LocalDateTime.of(2023, 10, 1, 22, 0),
                         LocalDateTime.of(2023, 10, 2, 6, 0), SleepingQuality.GOOD),
@@ -165,13 +243,8 @@ public class SleepTrackerAppTest {
                 new SleepingSession(LocalDateTime.of(2023, 10, 6, 23, 0),
                         LocalDateTime.of(2023, 10, 7, 7, 0), SleepingQuality.GOOD)
         );
-
-        SleeplessNightsCount sleeplessCount = new SleeplessNightsCount();
-        SleepAnalysisResult result = sleeplessCount.apply(sessions);
-
-        long expectedNights = 1;
-
-        assertEquals("Количество бессонных ночей", result.getTitle());
-        assertEquals(expectedNights, result.getResult(), "Ошибка подсчета бессонных ночей");
+        TotalSessionsCount totalSessionsCount = new TotalSessionsCount();
+        SleepAnalysisResult result = totalSessionsCount.apply(sessions);
+        assertEquals(4, result.getResult());
     }
 }

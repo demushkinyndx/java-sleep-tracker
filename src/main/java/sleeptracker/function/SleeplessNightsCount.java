@@ -23,11 +23,14 @@ public class SleeplessNightsCount implements Function<List<SleepingSession>, Sle
 
         LocalDateTime lastDateTime = sleepingSessions.stream()
                 .reduce((a, b) -> b) // оставляет последний элемент
-                .map(SleepingSession::getSleepStart)
+                .map(SleepingSession::getSleepEnd)
                 .orElse(firstDateTime);
 
         long nightsTotal = ChronoUnit.DAYS.between(firstDateTime.toLocalDate(), lastDateTime.toLocalDate());
-
+        if (nightsTotal == 0 && !firstDateTime.toLocalTime().equals(lastDateTime.toLocalTime())) {
+            //только одна запись в один день в логе
+            nightsTotal = 1;
+        }
         return new SleepAnalysisResult("Количество бессонных ночей", nightsTotal - sleepingNightsCount);
     }
 }

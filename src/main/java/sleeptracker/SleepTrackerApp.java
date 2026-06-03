@@ -24,8 +24,8 @@ public class SleepTrackerApp {
         functionList.add(new ChronoTypeFunc());
 
         try {
-            List<SleepingSession> sleepSessions = new DataLoader().loadSleepData(SLEEP_LOG);
-            sleepSessions.forEach(session -> System.out.println(String.format("start: %s, end: %s, был сон: %s, хронотип: %s", session.getSleepStart(), session.getSleepEnd(), session.isSleepingNight(), session.getChronoType())));
+            List<SleepingSession> sleepSessions = new DataLoader().loadSleepData(readParameters(args));
+            //sleepSessions.forEach(session -> System.out.println(String.format("start: %s, end: %s, был сон: %s, хронотип: %s", session.getSleepStart(), session.getSleepEnd(), session.isSleepingNight(), session.getChronoType())));
             functionList.stream()
                     .map(function -> function.apply(sleepSessions))
                     .forEach(System.out::println);
@@ -35,6 +35,17 @@ public class SleepTrackerApp {
         } catch (SessionParseErrorException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    private static String readParameters(String[] args) {
+        String filename;
+        if (args.length > 0) {
+            filename = args[0];
+        } else {
+            filename = SLEEP_LOG;
+            System.out.println("Имя файла не указано, используется имя по-умолчанию (" + SLEEP_LOG + ")");
+        }
+        return filename;
     }
 
 }
